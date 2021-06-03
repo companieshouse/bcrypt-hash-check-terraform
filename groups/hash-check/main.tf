@@ -18,7 +18,6 @@ module "hash_check" {
   lambda_memory_size                    = var.lambda_memory_size
   lambda_runtime                        = var.lambda_runtime
   lambda_timeout_seconds                = var.lambda_timeout_seconds
-  region                                = var.region
   release_artifact_key                  = var.release_artifact_key
   release_bucket_name                   = var.release_bucket_name
   service                               = var.service
