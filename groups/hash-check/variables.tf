@@ -64,23 +64,3 @@ variable "release_artifact_key" {
   type        = string
   description = "The release artifact key for the Lambda function"
 }
-
-variable "network_state_bucket_name" {
-  type        = string
-  description = "The name of the S3 bucket containing the application network remote state"
-}
-
-variable "network_state_bucket_key" {
-  type        = string
-  description = "The key name used when constructing the path to the application network remote state in the S3 bucket"
-}
-
-variable vault_username {
-  type        = string
-  description = "The HashiCorp Vault username used to retrieve secrets"
-}
-
-variable vault_password {
-  type        = string
-  description = "The HashiCorp Vault password used to retrieve secrets"
-}

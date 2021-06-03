@@ -1,18 +1,3 @@
-variable "aws_account" {
-  type        = string
-  description = "The AWS account name"
-}
-
-variable "aws_account_id" {
-  type        = string
-  description = "The AWS account identifier"
-}
-
-variable "aws_profile" {
-  type        = string
-  description = "The AWS profile name; used as a prefix for Vault secrets"
-}
-
 variable "region" {
   type        = string
   description = "The AWS region in which resources will be created"
