@@ -1,0 +1,5 @@
+aws_profile = "development-eu-west-2"
+
+environment = "harmon1"
+
+lambda_timeout_seconds = 300
