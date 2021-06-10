@@ -1,0 +1,6 @@
+aws_account = "staging"
+aws_profile = "staging-eu-west-2"
+
+environment = "staging"
+
+lambda_timeout_seconds = 300
