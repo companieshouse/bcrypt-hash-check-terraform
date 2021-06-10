@@ -1,0 +1,5 @@
+aws_profile = "development-eu-west-2"
+
+environment = "cidev"
+
+lambda_timeout_seconds = 300
