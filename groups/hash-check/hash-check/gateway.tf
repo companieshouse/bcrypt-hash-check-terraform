@@ -13,7 +13,7 @@ resource "aws_api_gateway_rest_api" "hash_check" {
     {
       "Effect": "Allow",
       "Action": "execute-api:Invoke"
-      "Resource": "${aws_api_gateway_rest_api.hash_check.execution_arn}"
+      "Resource": "${self.execution_arn}"
     }
   ]
 }
