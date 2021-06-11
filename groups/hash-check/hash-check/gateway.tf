@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "api_gateway_policy" {
     effect = "Allow"
   
     principals {
-      type        = "*"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
