@@ -5,6 +5,19 @@ resource "aws_api_gateway_rest_api" "hash_check" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+
+    policy = <<EOF
+{
+  "Version": "2021-06-11",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "execute-api:Invoke"
+      "Resource": "${aws_api_gateway_rest_api.hash_check.execution_arn}"
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_api_gateway_resource" "hash_check_resource" {
@@ -17,7 +30,7 @@ resource "aws_api_gateway_method" "hash_check_method" {
   rest_api_id   = aws_api_gateway_rest_api.hash_check.id
   resource_id   = aws_api_gateway_resource.hash_check_resource.id
   http_method   = "POST"
-  authorization = "NONE"
+  authorization = "AWS_IAM"
   api_key_required = true
 }
 
