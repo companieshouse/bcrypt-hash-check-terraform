@@ -5,22 +5,23 @@ resource "aws_api_gateway_rest_api" "hash_check" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+
+  policy = data.aws_iam_policy_document.api_gateway_policy.json
 }
 
-resource "aws_api_gateway_rest_api_policy" "hash_check" {
-  rest_api_id = aws_api_gateway_rest_api.hash_check.id
+data "aws_iam_policy_document" "api_gateway_policy" {
 
-  policy = <<EOF
-{
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "execute-api:Invoke",
-      "Resource": "${aws_api_gateway_rest_api.hash_check.execution_arn}",
-    }
-  ]
-}
-EOF
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "execute-api:Invoke"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
 }
 
 resource "aws_api_gateway_resource" "hash_check_resource" {
