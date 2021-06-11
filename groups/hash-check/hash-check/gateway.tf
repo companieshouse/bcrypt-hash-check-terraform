@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "api_gateway_policy" {
     ]
 
     resources = [
-      "*"
+      "execute-api:/*/*/*"
     ]
   }
 }
