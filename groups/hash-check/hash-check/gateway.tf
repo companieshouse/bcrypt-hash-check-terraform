@@ -69,9 +69,9 @@ resource "aws_api_gateway_integration_response" "hash_check_integration_response
   status_code = aws_api_gateway_method_response.response_200.status_code
   response_templates = {
     "text/plain" = <<EOF
-    #set($inputRoot = $input.path('$'))
-    $inputRoot.body
-    EOF
+#set($inputRoot = $input.path('$'))
+$inputRoot.body
+EOF
   }
 }
 
