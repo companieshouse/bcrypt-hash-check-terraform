@@ -48,8 +48,15 @@ resource "aws_api_gateway_integration" "integration" {
   resource_id             = aws_api_gateway_resource.hash_check_resource.id
   http_method             = aws_api_gateway_method.hash_check_method.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = aws_lambda_function.hash_check.invoke_arn
+}
+
+resource "aws_api_gateway_method_response" "response_200" {
+  rest_api_id = aws_api_gateway_rest_api.hash_check.id
+  resource_id = aws_api_gateway_resource.hash_check_resource.id
+  http_method = aws_api_gateway_method.hash_check_method.http_method
+  status_code = "200"
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
