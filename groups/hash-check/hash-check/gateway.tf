@@ -5,6 +5,28 @@ resource "aws_api_gateway_rest_api" "hash_check" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+
+  policy = data.aws_iam_policy_document.api_gateway_policy.json
+}
+
+data "aws_iam_policy_document" "api_gateway_policy" {
+
+  statement {
+    effect = "Allow"
+  
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "execute-api:Invoke"
+    ]
+
+    resources = [
+      "execute-api:/*/*/*"
+    ]
+  }
 }
 
 resource "aws_api_gateway_resource" "hash_check_resource" {
@@ -17,7 +39,7 @@ resource "aws_api_gateway_method" "hash_check_method" {
   rest_api_id   = aws_api_gateway_rest_api.hash_check.id
   resource_id   = aws_api_gateway_resource.hash_check_resource.id
   http_method   = "POST"
-  authorization = "NONE"
+  authorization = "AWS_IAM"
   api_key_required = true
 }
 
@@ -26,12 +48,39 @@ resource "aws_api_gateway_integration" "integration" {
   resource_id             = aws_api_gateway_resource.hash_check_resource.id
   http_method             = aws_api_gateway_method.hash_check_method.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = aws_lambda_function.hash_check.invoke_arn
 }
 
+resource "aws_api_gateway_method_response" "response_200" {
+  rest_api_id = aws_api_gateway_rest_api.hash_check.id
+  resource_id = aws_api_gateway_resource.hash_check_resource.id
+  http_method = aws_api_gateway_method.hash_check_method.http_method
+  status_code = "200"
+  response_models = {
+    "text/plain" = "Empty"
+  }
+}
+
+resource "aws_api_gateway_integration_response" "hash_check_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.hash_check.id
+  resource_id = aws_api_gateway_resource.hash_check_resource.id
+  http_method = aws_api_gateway_method.hash_check_method.http_method
+  status_code = aws_api_gateway_method_response.response_200.status_code
+  response_templates = {
+    "text/plain" = <<EOF
+#set($inputRoot = $input.path('$'))
+$inputRoot.body
+EOF
+  }
+}
+
 resource "aws_api_gateway_deployment" "deployment" {
-  depends_on = [aws_api_gateway_integration.integration]
+  depends_on = [
+    aws_api_gateway_integration.integration,
+    aws_api_gateway_integration_response.hash_check_integration_response,
+    aws_api_gateway_method_response.response_200
+  ]
 
   rest_api_id = aws_api_gateway_rest_api.hash_check.id
 }

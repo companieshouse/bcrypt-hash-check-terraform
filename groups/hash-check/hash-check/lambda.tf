@@ -50,3 +50,12 @@ data "aws_iam_policy_document" "lambda_trust" {
     }
   }
 }
+
+resource "aws_lambda_permission" "lambda_permission" {
+  statement_id  = "AllowApiToInvokeLambda"
+  action        = "lambda:InvokeFunction"
+  function_name = local.lambda_function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_rest_api.hash_check.execution_arn}/*/*/*"
+}
