@@ -5,28 +5,6 @@ resource "aws_api_gateway_rest_api" "hash_check" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
-
-  policy = data.aws_iam_policy_document.api_gateway_policy.json
-}
-
-data "aws_iam_policy_document" "api_gateway_policy" {
-
-  statement {
-    effect = "Allow"
-  
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "execute-api:Invoke"
-    ]
-
-    resources = [
-      "execute-api:/*/*/*"
-    ]
-  }
 }
 
 resource "aws_api_gateway_resource" "hash_check_resource" {
@@ -39,7 +17,7 @@ resource "aws_api_gateway_method" "hash_check_method" {
   rest_api_id   = aws_api_gateway_rest_api.hash_check.id
   resource_id   = aws_api_gateway_resource.hash_check_resource.id
   http_method   = "POST"
-  authorization = "AWS_IAM"
+  authorization = "NONE"
   api_key_required = true
 }
 
