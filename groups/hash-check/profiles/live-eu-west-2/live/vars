@@ -1,0 +1,6 @@
+aws_account = "live"
+aws_profile = "live-eu-west-2"
+
+environment = "live"
+
+lambda_timeout_seconds = 300
